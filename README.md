@@ -1,45 +1,43 @@
-# 🌍 Planificador de Viajes
+# 🌍 Планировщик Путешествий
 
-Aplicación web para planificar viajes con **conversión de moneda en tiempo real** usando una API externa.
-
-**🔗 Demo:** [Próximamente en PythonAnywhere]
+Веб-приложение для планирования путешествий с **конвертацией валют в реальном времени** с использованием внешнего API.
 
 ---
 
-## 📋 Descripción
+## 📋 Описание
 
-Este proyecto permite a los usuarios:
-- Explorar destinos turísticos con información de costos
-- Planificar viajes seleccionando destino, días y moneda
-- Calcular el presupuesto total con **conversión de moneda REAL**
-- Agregar gastos personalizados (vuelo, hotel, comidas, etc.)
+Этот проект позволяет пользователям:
+- Просматривать туристические направления с информацией о стоимости
+- Планировать поездки, выбирая направление, количество дней и валюту
+- Рассчитывать общий бюджет с **реальной конвертацией валют**
+- Добавлять индивидуальные расходы (авиабилеты, отель, питание и т.д.)
 
 ---
 
-## 🛠️ Tecnologías utilizadas
+## 🛠️ Используемые технологии
 
 - **Python 3.10**
 - **Django 5.2**
-- **Bootstrap 5** (diseño responsive)
-- **ExchangeRate-API** (conversión de moneda en tiempo real)
-- **SQLite** (desarrollo)
+- **Bootstrap 5** (адаптивный дизайн)
+- **ExchangeRate-API** (конвертация валют в реальном времени)
+- **SQLite** (разработка)
 - **Git & GitHub**
 
 ---
 
-## 📊 Modelos de datos
+## 📊 Модели данных
 
-El proyecto utiliza 3 modelos relacionados:
+Проект использует 3 связанные модели:
 
-1. **Destino**: Ciudades turísticas con su moneda y costo de vida
-2. **PresupuestoViaje**: Presupuestos creados por los usuarios
-3. **ItemGasto**: Gastos personalizados dentro de un presupuesto
+1. **Destino (Направление)**: Туристические города с их валютой и стоимостью жизни
+2. **PresupuestoViaje (Бюджет поездки)**: Бюджеты, созданные пользователями
+3. **ItemGasto (Статья расхода)**: Индивидуальные расходы в рамках бюджета
 
 ---
 
-## 🚀 Cómo ejecutar localmente
+## 🚀 Как запустить локально
 
-### 1. Clonar el repositorio
+### 1. Клонировать репозиторий
 ```bash
 git clone https://github.com/abaddd03/planificador-viajes.git
 cd planificador-viajes
