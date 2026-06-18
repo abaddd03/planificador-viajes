@@ -1,0 +1,148 @@
+{% extends 'planificador/base.html' %}
+
+{% block titulo %}{{ titulo }}{% endblock %}
+
+{% block contenido %}
+<div class="row">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'lista_destinos' %}">Destinos</a></li>
+                <li class="breadcrumb-item active">{{ titulo }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-calculator"></i> Planificar tu viaje</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.destino.id_for_label }}" class="form-label">Destino</label>
+                        {{ form.destino }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.dias.id_for_label }}" class="form-label">Días de viaje</label>
+                        {{ form.dias }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.moneda_usuario.id_for_label }}" class="form-label">Tu moneda</label>
+                        {{ form.moneda_usuario }}
+                    </div>
+                    
+                    <button type="submit" name="calcular" class="btn btn-primary w-100">
+                        <i class="fas fa-calculator"></i> Calcular presupuesto
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Formulario para agregar gastos -->
+        <div class="card mt-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Agregar gasto personalizado</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ gastos_form.as_p }}
+                    <button type="submit" name="agregar_gasto" class="btn btn-success w-100">
+                        <i class="fas fa-plus"></i> Agregar gasto
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        {% if resultado %}
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-check-circle"></i> Resultado del presupuesto</h5>
+            </div>
+            <div class="card-body">
+                <h4>{{ resultado.destino.nombre }}, {{ resultado.destino.pais }}</h4>
+                <hr>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span><i class="fas fa-calendar-alt"></i> Días de viaje</span>
+                        <strong>{{ resultado.dias }} días</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span><i class="fas fa-coins"></i> Costo base</span>
+                        <strong>${{ resultado.costo_base|floatformat:2 }} {{ resultado.destino.moneda_local }}</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span><i class="fas fa-exchange-alt"></i> Tasa de cambio</span>
+                        <strong>1 {{ resultado.destino.moneda_local }} = {{ resultado.tasa_cambio|floatformat:4 }} {{ resultado.moneda_usuario }}</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between list-group-item-success">
+                        <span><i class="fas fa-tag"></i> <strong>Total estimado</strong></span>
+                        <strong>${{ resultado.costo_total|floatformat:2 }} {{ resultado.moneda_usuario }}</strong>
+                    </li>
+                </ul>
+                
+                {% if resultado.presupuesto %}
+                <div class="alert alert-success mt-3">
+                    <i class="fas fa-save"></i> Presupuesto guardado en tu perfil.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+        <div class="card">
+            <div class="card-body text-center text-muted">
+                <i class="fas fa-plane" style="font-size: 4rem;"></i>
+                <h5 class="mt-3">Selecciona un destino y calcula tu presupuesto</h5>
+                <p>El sistema calculará el costo total en tu moneda local</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Gastos sugeridos -->
+{% if gastos_sugeridos %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0"><i class="fas fa-list"></i> Gastos sugeridos para {{ destino.nombre }}</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Categoría</th>
+                                <th>Descripción</th>
+                                <th>Costo estimado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for gasto in gastos_sugeridos %}
+                            <tr>
+                                <td><span class="badge bg-info">{{ gasto.categoria }}</span></td>
+                                <td>{{ gasto.descripcion }}</td>
+                                <td>${{ gasto.costo_estimado }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

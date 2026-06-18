@@ -1,0 +1,58 @@
+{% extends 'planificador/base.html' %}
+
+{% block titulo %}Todos los Destinos{% endblock %}
+
+{% block contenido %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="display-5">
+            <i class="fas fa-globe-americas text-primary"></i> Todos los Destinos
+        </h1>
+        <p class="lead text-muted">Explora nuestra lista de destinos y encuentra el lugar perfecto para tu viaje</p>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    {% for destino in destinos %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card card-destino h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ destino.nombre }}</h5>
+                <h6 class="card-subtitle mb-3 text-muted">
+                    <i class="fas fa-map-marker-alt"></i> {{ destino.pais }}
+                </h6>
+                <p class="card-text small text-muted">{{ destino.descripcion|truncatechars:100 }}</p>
+                <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap">
+                    <span class="badge badge-moneda mb-1">
+                        <i class="fas fa-money-bill-wave"></i> {{ destino.moneda_local }}
+                    </span>
+                    <span class="badge badge-precio mb-1">
+                        <i class="fas fa-tag"></i> ${{ destino.costo_vida_diario }}/día
+                    </span>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-0">
+                <a href="{% url 'detalle_destino' destino.id %}" class="btn btn-primary-custom btn-sm w-100">
+                    <i class="fas fa-calculator"></i> Planificar viaje
+                </a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> No hay destinos disponibles. Carga algunos datos primero.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row mt-3">
+    <div class="col-12">
+        <p class="text-muted">
+            <i class="fas fa-info-circle"></i> Total de destinos: {{ destinos|length }}
+        </p>
+    </div>
+</div>
+{% endblock %}
